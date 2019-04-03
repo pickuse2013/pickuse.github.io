@@ -1,0 +1,129 @@
+body {
+
+    background-color  : #EDF2C5;
+    /*font-family     : 'Arial Black', sans-serif;*/
+}
+
+.header,
+.main-header,
+.section-header,
+.nav {
+    font-family: 'Arial Black', sans-serif;
+}
+
+
+.nav {
+    color: #EDF2C5;
+}
+
+.padding6px{
+    padding: 6px;
+}
+
+section .content {
+    padding-top: 16px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 16px;
+    font-size       : 12px;
+    background-color: rgb(247, 251, 218);
+    color           : rgb(125, 125, 125);
+    line-height: 1.33;
+    border-radius: 3px;
+}
+
+hr {
+    border-top: 1px solid #7D7D7D;
+}
+
+section {
+    border-radius: 3px;
+}
+
+.arial-mt-regular {
+    font-family: "ArialMT Regular", sans-serif;
+}
+
+.arial-bold-mt {
+    font-family: "ArialMT Bold", sans-serif;
+}
+
+.header-button button {
+    font-size       : 14px;
+    border          : 1px solid #778A50;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius   : 3px;
+    font-weight     : bold;
+    color           : #778a50;
+}
+
+.mt20px {
+    margin-top: 20px;
+}
+
+.nopadding {
+    padding: 0 !important;
+    margin : 0 !important;
+}
+
+.nopadding-r {
+    padding-right: 0 !important;
+}
+
+.nopadding-l {
+    padding-left: 0 !important;
+}
+
+.container-custom-width {
+    max-width: 940px;
+}
+
+.main-header {
+    color        : #778A50;
+    font-size    : 44px;
+    margin-bottom: 17px;
+    display      : flex;
+}
+
+footer {
+    background-color: #778A50;
+    color           : #EDF2C5;
+    font-size       : 12px;
+
+    height     : 60px;
+    line-height: 60px;
+    text-align : center;
+}
+
+.section-header {
+    color        : #EDF2C5;
+    font-size    : 18px;
+    margin-bottom: 17px;
+    display      : flex;
+
+    background-color: #778A50;
+    border-radius   : 3px;
+
+    padding: 15px 30px !important;
+}
+
+.header-button span {
+    border-left : 1px solid #778A50;
+    padding-left: 6px;
+    height      : 25px;
+}
+
+nav {
+    background-color: #778A50;
+    border-radius   : 3px;
+}
+
+nav a {
+    padding: 16px 30px !important;
+    color  :#EDF2C5;
+}
+
+nav a:hover {
+    color          : white;
+    text-decoration: none;
+}
