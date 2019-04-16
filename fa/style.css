@@ -1,0 +1,33 @@
+.site-header {
+    background-color: #02346b;
+}
+
+.site-header a {
+    color: white;
+}
+
+.card-anti-overflow {
+    overflow  : hidden;
+    max-height: 225px;
+}
+
+.card-label {
+    background-color: #007bff;
+    position        : absolute;
+    bottom          : -1.25rem;
+
+    /*card-overlayer*/
+    position: absolute;
+    top     : 0;
+    right   : 0;
+    bottom  : 0;
+    left    : 0;
+
+    width     : 100px;
+    text-align: center;
+    display   : inline-table;
+}
+
+.card-label p {
+    margin: 4px 8px;
+}
