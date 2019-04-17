@@ -15,6 +15,33 @@
             .nav-pills .show>.nav-link {
                 background-color: #346394;
             }
+
+            a.o {
+                color: #007bff;
+            }
+
+            #game:hover {
+                animation: spin 0.4s linear infinite;
+            }
+
+            @-moz-keyframes spin {
+                100% {
+                    -moz-transform: rotate(360deg);
+                }
+            }
+
+            @-webkit-keyframes spin {
+                100% {
+                    -webkit-transform: rotate(360deg);
+                }
+            }
+
+            @keyframes spin {
+                100% {
+                    -webkit-transform: rotate(360deg);
+                    transform: rotate(360deg);
+                }
+            }
         </style>
     </head>
 
@@ -47,7 +74,7 @@
         </nav>
         <main>
             <!--消息區-->
-            <div class="album py-5 bg-light">
+            <div class="album super-album py-5 bg-light">
                 <div class="container">
                     <div class="row">
                         <div class="col-3">
@@ -65,12 +92,12 @@
                             <div class="tab-content" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel">
                                     <h3>實務專題</h3>
+                                    <br>
+                                    實務專題競賽<br><br>
+                                    羊同學:<br><br>
+                                    <p><a class="o" href="result/sheep/module_C3/index.htm">HTML5 畫布</a> 專題獲獎</p>
 
-                                    實務專題競賽
-
-                                    <p><a href="result/sheep/module_C3/index.htm">HTML5 畫布</a> 獲獎</p>
-
-                                    <p><a href="result/sheep/99_Module_C/index.htm">俄羅斯方塊</a> 獲獎</p>
+                                    <p><a class="o" href="result/sheep/99_Module_C/index.htm">俄羅斯方塊</a> 專題獲獎</p>
 
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
@@ -98,7 +125,7 @@
                                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
                                     aria-labelledby="v-pills-messages-tab">
                                     <h3 class="title">????</h3>
-                                    <img src="images/kjy01601.png">
+                                    <img src="images/kjy01601.png" id="game">
                                 </div>
                             </div>
                         </div>
@@ -130,6 +157,10 @@
                         $(".textfeat").hide(500);
                     }
                 );
+            });
+
+            $("#game").click(function () {
+
             });
         </script>
     </body>
