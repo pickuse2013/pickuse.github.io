@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>無標題文件</title>
+<link href="css/style.css" rel="stylesheet" />
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui-1.11.2/jquery-ui.js"></script>
+<script>
+(function($){
+	$(document).ready(function() {
+		var drag = null;
+		var dragFct = 0;
+		var transform = null;
+		var resize = null;
+		
+		function isHit(s,e)
+		{
+			return s.position().left <= e.pageX && s.position().left + s[0].getBoundingClientRect().width && s.position().top <= e.pageY && s.position().top + s[0].getBoundingClientRect().height;
+		}
+		
+		function updateTrans()
+		{
+			var pt = $("svg")[0].createSVGPoint();
+			var mat1,mat2;
+			
+			mat1 = drag[0].getScreenCTM();
+			mat1.e = 0;
+			mat1.f = 0;
+			drag.attr("transform",
+				"scale(" + drag.attr("scale_") + ") " +
+				"translate(" + drag.attr("translateX_") + " " + drag.attr("translateY_") + ")"
+			);
+			mat2 = drag[0].getScreenCTM().inverse();
+			mat2.e = 0;
+			mat2.f = 0;
+			mat1 = mat1.multiply(mat2);
+		}
+		
+		$(".resize")
+			.mousedown(function(e){
+				resize = {
+					ox:e.offsetX,
+					oy:e.offsetY,
+					px:e.pageX,
+					py:e.pageY,
+					svg_width:$("svg").width(),
+					svg_height:$("svg").height(),
+					paint_width:$(".paint").width(),
+					paint_height:$(".paint").height(),
+				};
+				$(this).css({
+					position:"absolute",
+					left:e.pageX - ( 20 + resize.ox),
+					top:e.pageY - (resize.oy),
+				});
+			});
+		$(document)
+			.mousemove(function(e){
+				if(resize)
+				{
+					$(".resize").css({
+						left:e.pageX - (20 + resize.ox),
+						top:e.pageY - (resize.oy),
+					});
+					$("svg").attr({
+						width:resize.svg_width + (e.pageX - resize.px),
+						height:resize.svg_height + (e.pageY - resize.py),
+					});
+					$(".paint").css({
+						width:resize.paint_width + (e.pageX - resize.px),
+						height:resize.paint_height + (e.pageY - resize.py),
+					});
+				}
+			})
+			.mouseup(function(e){
+				if(resize)
+				{
+					$(".resize").css({
+						position:"relative",
+						left:0,
+						top:0,
+					});
+					resize = null;
+				}
+			});
+		
+		
+        var tool = $(".tool.sel");
+		var down = null;
+		var move = null;
+		var pattern = null;
+		var tid = 0;
+		var start = new Date().getTime();
+		
+		$(".color").click(function(e){
+			$(".color.sel").removeClass("sel");
+			$(this).addClass("sel");
+		});
+		
+		$(".width").click(function(e){
+			$(".width.sel").removeClass("sel");
+			$(this).addClass("sel");
+		});
+		
+		$(".tool").click(function(e){
+			$(".tool.sel").removeClass("sel");
+			$(this).addClass("sel");
+			tool = $(this);
+			
+			if($(tool).hasClass("pattern"))
+			{
+				var image =new Image();
+				image.src = $(this).css("background-image").split(/"/)[1];
+				image.onload = function(){
+					var canvas = document.createElement("canvas");
+					var context = canvas.getContext("2d");
+					canvas.width = image.width;
+					canvas.height = image.height;
+					context.drawImage(image,0,0);
+					pattern = canvas.toDataURL();
+				};
+			}
+		});
+		
+		$("#load").click(function(e){
+			$("#file").trigger();
+		});
+		$("#file").change(function(e){
+			var f = this.files[0];
+			if(f)
+			{
+				var r = new fileReader();
+				r.readAsText(f);
+				r.onload = function(){
+					 arr = this.result.split(";");
+					 arr1 = arr[0].split(",");
+					 $("svg").attr("width",arr1[0]);
+					 $("svg").attr("height",arr1[1]);
+					 $("svg").html(this.result.substr(arr[0].length+1));
+				}
+			}
+		});
+		$("#replay").click(function(e){
+			timer = 0;
+			$("svg > *").attr("visibility","hidden");
+			tid = setInterval(function(){
+				timer ++;
+				$("svg > *").each(function(e){
+					if($(this).attr("start_") <= timer && ( timer < $(this).attr("stop_") || $(this).attr("stop_") == null))
+					{
+						$(this).attr("visibility","visible");
+					}
+					else
+					{
+						$(this).attr("visibility","hidden");
+					}
+				});
+				if(timer > $("svg>:last").attr("start_"))
+				{
+					clearInterval(tid);
+				}
+			},100);
+		});
+		$("svg")
+			.mousedown(function(e){
+				e.stopPropagation();
+				e.preventDefault();
+				down = {
+					x:e.offsetX,
+					y:e.offsetY
+				};
+				move = down;
+				if(drag == null)
+				{
+					$("svg > :not([stop_])").each(function(index,element){
+						if(isHit($(this),e))
+						{
+							drag = $(this);
+							transform = {
+								tx:parseInt(drag.attr("translateX_"),0),
+								ty:parseInt(drag.attr("translateY_"),0),
+								s:parseFloat(drag.attr("scale_")),
+							};
+							dragFct = 1;
+							if(e.pageX - drag.position().left > drag[0].getBoundingClientRect().width /2)
+							{
+								if(e.pageY - drag.position().top > drag[0].getBoundingClientRect().height /2)
+								{
+									dragFct = 2;
+								}
+							}
+							updateTrans();
+						}
+					});
+				}
+				if(drag)
+				{
+					tid = setInterval(function(){
+						var last = drag;
+						drag = last.clone().appendTo("svg");
+						switch(dragFct)
+						{
+							case 1:
+								drag.attr({
+									"translateX_":transform.tx+(move.x - down.x),
+									"translateY_":transform.ty+(move.y - down.y)
+								});
+								break;
+							case 2:
+								if(move.y>down.y)
+								{
+									drag.attr("scale_",transform.s + Math.abs(move.y-down.y)/100);
+								}
+								else
+								{
+									drag.attr("scale_",transform.s - Math.abs(move.y-down.y)/100);
+								}
+								break;
+						}
+						updateTrans();
+						drag.attr("start_",Math.floor((new Date().getTime() - start)/100));
+						last.attr({
+							stop_:drag.attr("start_"),
+							visibility:"hidden",
+						});
+					},100);
+				}
+				else
+				{
+					if($(tool).hasClass("shape"))
+					{
+						$(document.createElementNS("http://www.w3.org/2000/svg",$(tool).attr("svg_")))
+							.attr({
+								stroke:$(".color.sel").css("background-color"),
+								"stroke-width":parseInt($(".width.sel").css("background-size"))/10,
+								fill:"none",
+								points:"",
+								start_:Math.floor((new Date().getTime())/100),
+								translateX_:0,
+								translateY_:0,
+								scale_:1,
+							}).appendTo("svg");
+							tid = setInterval(function(){
+								var last = $("svg >:last");
+								var clone = last.clone().appendTo("svg");
+								switch($(tool).attr("id"))
+								{
+									case "polygon":
+										var side = $(tool).attr("side_");
+										var r = Math.sqrt(Math.pow(move.x-down.x,2) + Math.pow(move.y-down.y,2));
+										var str = "M";
+										for(var i = 0,j = Math.atan((move.y-down.y) / (move.x-down.x)) + ((move.x > down.x)?0:Math.PI);i<side;i++,j += 2 * Math.PI/side)
+										{
+											str += " " + (down.x + r * Math.cos(j)) + " " + (down.y + r * Math.sin(j));
+										}
+										str += " Z";
+										clone.attr("d",str);
+										break;
+									case "polyline":
+										clone.attr({
+											points:clone.attr("points") + " " + move.x + " " + move.y ,
+										});
+										break;
+									case "ellipse":
+										clone.attr({
+											cx:Math.min(move.x,down.x) + Math.abs(move.x - down.x)/2,
+											cy:Math.min(move.y,down.y) + Math.abs(move.y - down.y)/2,
+											rx:Math.abs(move.x - down.x)/2,
+											ry:Math.abs(move.y - down.y)/2
+										});
+										break;
+									case "rect":
+										clone.attr({
+											x:Math.min(move.x,down.x),
+											y:Math.min(move.y,down.y),
+											width:Math.abs(move.x - down.x),
+											height:Math.abs(move.y - down.y)
+										});
+										break;
+									case "star":
+										var side = 5;
+										var r = Math.sqrt(Math.pow((move.x-down.x),2) + Math.pow((move.y-down.y),2));
+										var r2 = r/2;
+										var str = "M";
+										for(var i = 0,j = Math.atan((move.y-down.y) / (move.x-down.x)) + ((move.x > down.x)?0:Math.PI) , k = j + Math.PI/side;i<side;i++,j += 2 * Math.PI/side,k += 2 * Math.PI/side)
+										{
+											str += " " + (down.x + r * Math.cos(j)) + " " + (down.y + r * Math.sin(j));
+											str += " " + (down.x + r2 * Math.cos(k)) + " " + (down.y + r2 * Math.sin(k));
+										}
+										str += " Z";
+										clone.attr("d",str);
+										break;
+								}
+								clone.attr("start_",Math.floor((new Date().getTime() - start)/100));
+								last.attr({
+									stop_:clone.attr("start_"),
+									visibility:"hidden",
+								});
+							},100);
+					}
+					else if($(tool).hasClass("pattern"))
+					{
+						var img = document.createElementNS("http://www.w3.org/2000/svg","image");
+						img.setAttributeNS("http://www.w3.org/1999/xlink","href",pattern);
+						$(img).attr({
+							x:e.offsetX,
+							y:e.offsetY,
+							width:32,
+							height:32,
+							translateX_:0,
+							translateY_:0,
+							scale_:1,
+							start_:Math.floor((new Date().getTime())/100),
+						}).appendTo("svg");
+						
+					}
+				}
+			})
+			.mousemove(function(e){
+				if(down != null && e.which == 1)
+				{
+					move = {
+						x:e.offsetX,
+						y:e.offsetY
+					};
+				}
+				else
+				{
+					down = null;
+					clearInterval(tid);
+					drag = null;
+				}
+			});
+		;
+    });
+})(jQuery);
+</script>
+</head>
+
+<body>
+<div class="container">
+	<div class="row">
+    	<div class="block">
+        	<div class="btn color" style="background-color:red"></div>
+            <div class="btn color" style="background-color:orange"></div>
+            <div class="btn color" style="background-color:blue"></div>
+            <div class="btn color" style="background-color:green"></div>
+            <div class="btn color" style="background-color:purple"></div>
+            <div class="btn color" style="background-color:rebeccapurple"></div>
+            <div class="btn color sel" style="background-color:black"></div>
+            <div class="btn color" style="background-color:white"></div>
+            <div class="btn color" style="background-color:yellow"></div>
+        </div>
+        <div class="block">
+        	<div class="btn width sel" style="background:url(img/thick.png) center/10% no-repeat"></div>
+            <div class="btn width" style="background:url(img/thick.png) center/20% no-repeat"></div>
+            <div class="btn width" style="background:url(img/thick.png) center/30% no-repeat"></div>
+            <div class="btn width" style="background:url(img/thick.png) center/40% no-repeat"></div>
+            <div class="btn width" style="background:url(img/thick.png) center/50% no-repeat"></div>
+            <div class="btn width" style="background:url(img/thick.png) center/60% no-repeat"></div>
+            <div class="btn width" style="background:url(img/thick.png) center/70% no-repeat"></div>
+            <div class="btn width" style="background:url(img/thick.png) center/80% no-repeat"></div>
+        </div>
+        <div class="block">
+        	<div class="btn tool shape sel" id="polyline" svg_="polyline"></div>
+            <div class="btn tool shape" id="rect" svg_="rect" style="background:url(img/rect.png) center/contain"></div>
+            <div class="btn tool shape" id="polygon" svg_="path" side_="3" style="background:url(img/tri.png) center/contain"></div>
+            <div class="btn tool shape" id="polygon" svg_="path" side_="6" style="background:url(img/hex.png) center/contain"></div>
+            <div class="btn tool shape" id="ellipse" svg_="ellipse" style="background:url(img/ell.png) center/contain"></div>
+            <div class="btn tool shape" id="star" svg_="path" side_="5" style="background:url(img/star.png) center/contain"></div>
+        </div>
+        <div class="block" style="width:180px">
+        	<div class="btn tool pattern" style="background:url(img/p1.png) center/contain"></div>
+            <div class="btn tool pattern" style="background:url(img/p2.png) center/contain"></div>
+            <div class="btn tool pattern" style="background:url(img/p3.png) center/contain"></div>
+            <div class="btn tool pattern" style="background:url(img/p4.png) center/contain"></div>
+            <div class="btn tool pattern" style="background:url(img/p5.png) center/contain"></div>
+            <div class="btn tool pattern" style="background:url(img/p6.png) center/contain"></div>
+            <div class="btn tool pattern" style="background:url(img/p7.png) center/contain"></div>
+            <div class="btn tool pattern" style="background:url(img/p8.png) center/contain"></div>
+            <div class="btn tool pattern" style="background:url(img/p9.png) center/contain"></div>
+            <div class="btn tool pattern" style="background:url(img/p10.png) center/contain"></div>
+            <div class="btn tool pattern" style="background:url(img/p11.png) center/contain"></div> 
+            <div class="btn tool pattern" style="background:url(img/p12.png) center/contain"></div>
+        </div>
+        <div class="block">
+            <input type="file" id="file" accept=".svg" style="display:none" />
+            <button id="replay">重播</button>
+        </div>
+    </div>
+    <div class="paint">
+    	<svg width="480px" height="480px">
+		</svg>
+        <div class="resize"></div>
+    </div>
+</div>
+</body>
+</html>
