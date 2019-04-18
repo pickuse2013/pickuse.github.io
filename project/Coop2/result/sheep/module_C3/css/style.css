@@ -1,0 +1,49 @@
+.container{
+	width:1000px;
+	height:auto;
+	margin:20px;
+	box-shadow:#666 15px;
+}
+.row{
+	width:100%;
+}
+.block{
+	float:left;
+	width:160px;
+	height:160px;
+	border:1px #000 solid;
+	border-radius:15px;
+	margin:4px;
+	padding:8px;
+}
+.sel{
+	border-color:yellow !important;
+}
+.btn{
+	width:32px;
+	height:32px;
+	float:left;
+	margin:4px 0px;
+}
+.color,.width,.shape,.pattern{
+	border:4px #666 solid;
+	margin-left:4px;
+}
+.paint{
+	width:500px;
+	height:500px;
+	background:#333;
+	clear:both;
+}
+.resize{
+	border-color:#f00 transparent;
+	border-style:solid;
+	border-width:0 0 20px 20px;
+	float:right;
+}
+svg{
+	background:#fff;
+	display:block;
+	margin:auto;
+}
+

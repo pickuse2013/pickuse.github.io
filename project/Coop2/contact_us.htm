@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>國立臺北科技大學資訊工程系</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav class="site-header pb-1">
+      <div class="text-right" style="background-color: #333;">
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">English</a></li>
+          <li class="list-inline-item"><a href="contact_us.htm">聯絡我們</a></li>
+          <li class="list-inline-item"><a href="https://www.ntut.edu.tw/">國立臺北科技大學</a></li>
+        </ul>
+      </div>
+      <div class="container d-flex flex-column flex-md-row justify-content-between">
+        <a class="py-2" href="index.htm">
+          國立臺北科技大學資訊工程系<br>
+          Department of Computer Science and Information Engineering, Taipei Tech
+        </a>
+      </div>
+    </nav>
+    <nav class="site-header" style="background-color: #205e9c">
+      <div class="container d-flex flex-column flex-md-row justify-content-between">
+        <a class="py-2 d-none d-md-inline-block" href="about_us.htm">系所介紹</a>
+        <a class="py-2 d-none d-md-inline-block" href="teacher.htm">系所成員</a>
+        <a class="py-2 d-none d-md-inline-block" href="course.htm">課程資訊</a>
+        <a class="py-2 d-none d-md-inline-block" href="#">招生訊息</a>
+        <a class="py-2 d-none d-md-inline-block" href="result.htm">教學成果</a>
+        <a class="py-2 d-none d-md-inline-block" href="#">研究計畫</a>
+        <a class="py-2 d-none d-md-inline-block" href="#">雙聯學位</a>
+      </div>
+    </nav>
+    <main>
+      <!--消息區-->
+      <div class="album py-5 super-album bg-light">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              校　　址：台北市忠孝東路三段一號<br>
+              系辦位置：宏裕科技大樓三樓 331室<br>
+              聯絡電話：(02)2771-2171 轉 4200<br>
+              傳　　真：(02)8773-2945<br>
+              E-mail：wwwcsie@ntut.edu.tw
+            </div>
+            <div class="col-md-6">
+              <img class="img-fluid" src="images/map.png">
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="text-muted">
+      <div class="container">
+        <p class="float-right">
+          <a href="#">Back to top</a>
+        </p>
+        <p></p>
+        <p>國立臺北科技大學資訊工程系 - 網頁設計實習課: 高oo 羊o 李oo </p>
+      </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"
+      integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+      integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+      crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function () {
+        $(".linkfeat").hover(
+          function () {
+            $(".textfeat").show(500);
+          },
+          function () {
+            $(".textfeat").hide(500);
+          }
+        );
+      });
+    </script>
+  </body>
+
+</html>

@@ -1,168 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>國立臺北科技大學資訊工程系</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>國立臺北科技大學資訊工程系</title>
 
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link href="style.css" rel="stylesheet">
-        <style>
-            .nav-pills .nav-link.active,
-            .nav-pills .show>.nav-link {
-                background-color: #346394;
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+    <style>
+        .nav-pills .nav-link.active,
+        .nav-pills .show>.nav-link {
+            background-color: #346394;
+        }
+
+        a.o {
+            color: #007bff;
+        }
+
+        #game:hover {
+            animation: spin 0.4s linear infinite;
+        }
+
+        @-moz-keyframes spin {
+            100% {
+                -moz-transform: rotate(360deg);
             }
+        }
 
-            a.o {
-                color: #007bff;
+        @-webkit-keyframes spin {
+            100% {
+                -webkit-transform: rotate(360deg);
             }
+        }
 
-            #game:hover {
-                animation: spin 0.4s linear infinite;
+        @keyframes spin {
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
             }
+        }
+    </style>
+</head>
 
-            @-moz-keyframes spin {
-                100% {
-                    -moz-transform: rotate(360deg);
-                }
-            }
-
-            @-webkit-keyframes spin {
-                100% {
-                    -webkit-transform: rotate(360deg);
-                }
-            }
-
-            @keyframes spin {
-                100% {
-                    -webkit-transform: rotate(360deg);
-                    transform: rotate(360deg);
-                }
-            }
-        </style>
-    </head>
-
-    <body>
-        <nav class="site-header pb-1">
-            <div class="text-right" style="background-color: #333;">
-                <ul class="list-inline">
-                    <li class="list-inline-item"><a href="#">English</a></li>
-                    <li class="list-inline-item"><a href="contact_us.htm">聯絡我們</a></li>
-                    <li class="list-inline-item"><a href="https://www.ntut.edu.tw/">國立臺北科技大學</a></li>
-                </ul>
-            </div>
-            <div class="container d-flex flex-column flex-md-row justify-content-between">
-                <a class="py-2" href="index.htm">
-                    國立臺北科技大學資訊工程系<br>
-                    Department of Computer Science and Information Engineering, Taipei Tech
-                </a>
-            </div>
-        </nav>
-        <nav class="site-header" style="background-color: #205e9c">
-            <div class="container d-flex flex-column flex-md-row justify-content-between">
-                <a class="py-2 d-none d-md-inline-block" href="about_us.htm">系所介紹</a>
-                <a class="py-2 d-none d-md-inline-block" href="teacher.htm">系所成員</a>
-                <a class="py-2 d-none d-md-inline-block" href="course.htm">課程資訊</a>
-                <a class="py-2 d-none d-md-inline-block" href="#">招生訊息</a>
-                <a class="py-2 d-none d-md-inline-block" href="result.htm">教學成果</a>
-                <a class="py-2 d-none d-md-inline-block" href="#">研究計畫</a>
-                <a class="py-2 d-none d-md-inline-block" href="#">雙聯學位</a>
-            </div>
-        </nav>
-        <main>
-            <!--消息區-->
-            <div class="album super-album py-5 bg-light">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-3">
-                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
-                                aria-orientation="vertical">
-                                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
-                                    role="tab" aria-controls="v-pills-home" aria-selected="true">實務專題</a>
-                                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-profile"
-                                    role="tab" aria-controls="v-pills-messages" aria-selected="false">競賽獲獎</a>
-                                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-messages"
-                                    role="tab" aria-controls="v-pills-profile" aria-selected="false">????</a>
-                            </div>
+<body>
+    <nav class="site-header pb-3">
+        <div class="text-right" style="background-color: #333;">
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">English</a></li>
+                <li class="list-inline-item"><a href="contact_us.htm">聯絡我們</a></li>
+                <li class="list-inline-item"><a href="https://www.ntut.edu.tw/">國立臺北科技大學</a></li>
+            </ul>
+        </div>
+        <div class="container flex-column flex-md-row justify-content-between">
+            <button class="navbar-toggler d-inline-block d-md-none d-sm-block" type="button" data-toggle="collapse"
+                data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <div class="vvv"></div>
+                <div class="vvv"></div>
+                <div class="vvv"></div>
+            </button>
+            <a class="py-2" href="index.htm">
+                國立臺北科技大學資訊工程系
+                <span class="d-none d-sm-none d-md-block">Department of Computer Science and Information Engineering,
+                    Taipei
+                    Tech</span>
+            </a>
+        </div>
+    </nav>
+    <nav class="site-header collapse navbar-collapse d-md-block" style="background-color: #205e9c" id="navbarCollapse">
+        <div class="container d-md-flex flex-column flex-md-row justify-content-between">
+            <a class="py-2 d-block d-md-inline-block" href="about_us.htm">系所介紹</a>
+            <a class="py-2 d-block d-md-inline-block" href="teacher.htm">系所成員</a>
+            <a class="py-2 d-block d-md-inline-block" href="course.htm">課程資訊</a>
+            <a class="py-2 d-block d-md-inline-block" href="#">招生訊息</a>
+            <a class="py-2 d-block d-md-inline-block" href="result.htm">教學成果</a>
+            <a class="py-2 d-block d-md-inline-block" href="#">研究計畫</a>
+            <a class="py-2 d-block d-md-inline-block" href="#">雙聯學位</a>
+        </div>
+    </nav>
+    <main>
+        <!--消息區-->
+        <div class="album super-album py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
+                            aria-orientation="vertical">
+                            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+                                role="tab" aria-controls="v-pills-home" aria-selected="true">實務專題</a>
+                            <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-profile"
+                                role="tab" aria-controls="v-pills-messages" aria-selected="false">競賽獲獎</a>
+                            <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-messages"
+                                role="tab" aria-controls="v-pills-profile" aria-selected="false">????</a>
                         </div>
-                        <div class="col-9">
-                            <div class="tab-content" id="v-pills-tabContent">
-                                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel">
-                                    <h3>實務專題</h3>
-                                    <br>
-                                    實務專題競賽<br><br>
-                                    羊同學:<br><br>
-                                    <p><a class="o" href="result/sheep/module_C3/index.htm">HTML5 畫布</a> 專題獲獎</p>
+                    </div>
+                    <div class="col-9">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel">
+                                <h3>實務專題</h3>
+                                <br>
+                                實務專題競賽<br><br>
+                                羊同學:<br><br>
+                                <p><a class="o" href="result/sheep/module_C3/index.htm">HTML5 畫布</a> 專題獲獎</p>
 
-                                    <p><a class="o" href="result/sheep/99_Module_C/index.htm">俄羅斯方塊</a> 專題獲獎</p>
+                                <p><a class="o" href="result/sheep/99_Module_C/index.htm">俄羅斯方塊</a> 專題獲獎</p>
 
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                                    aria-labelledby="v-pills-profile-tab">
-                                    <h3>競賽獲獎</h3>
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <th>日期</th>
-                                            <th>公告標題</th>
-                                        </tr>
-                                        <tr>
-                                            <td>2018-11-12</td>
-                                            <td>賀！本系學生參加107年度全國大專電腦軟體設計競賽應用軟體設計組獲得第一名與佳作</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2018-05-08</td>
-                                            <td>2017第十二屆戰國策全國創新創業競賽 創新創意組第一名</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2016-11-07</td>
-                                            <td>賀！本系同學榮獲第21屆全國大專校院資訊應用服務創新競賽 第一名</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                                    aria-labelledby="v-pills-messages-tab">
-                                    <h3 class="title">????</h3>
-                                    <img src="images/kjy01601.png" id="game">
-                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
+                                aria-labelledby="v-pills-profile-tab">
+                                <h3>競賽獲獎</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>日期</th>
+                                        <th>公告標題</th>
+                                    </tr>
+                                    <tr>
+                                        <td>2018-11-12</td>
+                                        <td>賀！本系學生參加107年度全國大專電腦軟體設計競賽應用軟體設計組獲得第一名與佳作</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2018-05-08</td>
+                                        <td>2017第十二屆戰國策全國創新創業競賽 創新創意組第一名</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2016-11-07</td>
+                                        <td>賀！本系同學榮獲第21屆全國大專校院資訊應用服務創新競賽 第一名</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
+                                aria-labelledby="v-pills-messages-tab">
+                                <h3 class="title">????</h3>
+                                <img src="images/kjy01601.png" id="game">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
-        <footer class="text-muted">
-            <div class="container">
-                <p class="float-right">
-                    <a href="#">Back to top</a>
-                </p>
-                <p></p>
-                <p>國立臺北科技大學資訊工程系 - 網頁設計實習課: 高oo 羊o 李oo </p>
-            </div>
-        </footer>
-        <script src="https://code.jquery.com/jquery-3.4.0.min.js"
-            integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
-            integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
-            crossorigin="anonymous"></script>
-        <script>
-            $(document).ready(function () {
-                $(".linkfeat").hover(
-                    function () {
-                        $(".textfeat").show(500);
-                    },
-                    function () {
-                        $(".textfeat").hide(500);
-                    }
-                );
-            });
+        </div>
+    </main>
+    <footer class="text-muted">
+        <div class="container">
+            <p class="float-right">
+                <a href="#">Back to top</a>
+            </p>
+            <p></p>
+            <p>國立臺北科技大學資訊工程系 - 網頁設計實習課: 高oo 羊o 李oo </p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $(".linkfeat").hover(
+                function () {
+                    $(".textfeat").show(500);
+                },
+                function () {
+                    $(".textfeat").hide(500);
+                }
+            );
+        });
 
-            $("#game").click(function () {
+        $("#game").click(function () {
 
-            });
-        </script>
-    </body>
+        });
+    </script>
+</body>
 
 </html>

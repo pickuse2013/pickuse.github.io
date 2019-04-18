@@ -1,0 +1,488 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>俄羅斯方塊</title>
+<style>
+#pause, #pause2 {
+	background-color: rgb(153,153,153);
+	position: absolute;
+}
+#end {
+	background-color: rgba(153,153,153,0.8);
+	position: absolute;
+}
+</style>
+<script src="jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+<link href="jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet" />
+<script src="jquery-ui-1.11.4/jquery-ui.js"></script>
+<script language="javascript">
+	var width	= 20;
+	var countX	= 10;
+	var countY	= 20;
+	var level	= 0;
+	var speed	= [1000, 250][level];
+	
+	var block = [
+		[
+			[0, 0, 0, 0,
+			 1, 1, 1, 1,
+			 0, 0, 0, 0,
+			 0, 0, 0, 0,],
+			[0, 1, 0, 0,
+			 0, 1, 0, 0,
+			 0, 1, 0, 0,
+			 0, 1, 0, 0,],
+		],
+		[
+			[0, 1, 0, 0,
+			 0, 1, 1, 1,
+			 0, 0, 0, 0,
+			 0, 0, 0, 0,],
+			[0, 1, 1, 0,
+			 0, 1, 0, 0,
+			 0, 1, 0, 0,
+			 0, 0, 0, 0,],
+			[1, 1, 1, 0,
+			 0, 0, 1, 0,
+			 0, 0, 0, 0,
+			 0, 0, 0, 0,],
+			[0, 0, 1, 0,
+			 0, 0, 1, 0,
+			 0, 1, 1, 0,
+			 0, 0, 0, 0,],
+		],
+		[
+			[0, 0, 1, 0,
+			 1, 1, 1, 0,
+			 0, 0, 0, 0,
+			 0, 0, 0, 0,],
+			[0, 1, 0, 0,
+			 0, 1, 0, 0,
+			 0, 1, 1, 0,
+			 0, 0, 0, 0,],
+			[0, 1, 1, 1,
+			 0, 1, 0, 0,
+			 0, 0, 0, 0,
+			 0, 0, 0, 0,],
+			[0, 1, 1, 0,
+			 0, 0, 1, 0,
+			 0, 0, 1, 0,
+			 0, 0, 0, 0,],
+		],
+		[
+			[0, 1, 1, 0,
+			 0, 1, 1, 0,
+			 0, 0, 0, 0,
+			 0, 0, 0, 0,],
+		],
+		[
+			[0, 0, 1, 1,
+			 0, 1, 1, 0,
+			 0, 0, 0, 0,
+			 0, 0, 0, 0,],
+			[0, 1, 0, 0,
+			 0, 1, 1, 0,
+			 0, 0, 1, 0,
+			 0, 0, 0, 0,],
+		],
+		[
+			[0, 1, 0, 0,
+			 1, 1, 1, 0,
+			 0, 0, 0, 0,
+			 0, 0, 0, 0,],
+			[0, 1, 0, 0,
+			 0, 1, 1, 0,
+			 0, 1, 0, 0,
+			 0, 0, 0, 0,],
+			[0, 0, 0, 0,
+			 1, 1, 1, 0,
+			 0, 1, 0, 0,
+			 0, 0, 0, 0,],
+			[0, 1, 0, 0,
+			 1, 1, 0, 0,
+			 0, 1, 0, 0,
+			 0, 0, 0, 0,],
+		],
+		[
+			[1, 1, 0, 0,
+			 0, 1, 1, 0,
+			 0, 0, 0, 0,
+			 0, 0, 0, 0,],
+			[0, 0, 1, 0,
+			 0, 1, 1, 0,
+			 0, 1, 0, 0,
+			 0, 0, 0, 0,],
+		],
+	];
+	var color = [
+		"rgb(  0, 240, 240)",
+		"rgb(  0,   0, 240)",
+		"rgb(240, 160,   0)",
+		"rgb(240, 240,   0)",
+		"rgb(  0, 240,   0)",
+		"rgb(160,   0, 240)",
+		"rgb(240,   0,   0)",
+	];
+
+	$(document).ready(function(){
+		//init ui
+		$("#board")
+			.attr("width", countX * width)
+			.attr("height", countY * width)
+			;
+		
+		$("#next")
+			.attr("width", 4 * width)
+			.attr("height", 4 * width)
+			;
+		
+		$("#pause")
+			.css("width", $("#board").css("width"))
+			.css("height", $("#board").css("height"))
+			.css("left", $("#board").offset().left)
+			.css("top", $("#board").offset().top)
+			.hide();
+			;
+		$("#pause2")
+			.css("width", $("#next").css("width"))
+			.css("height", $("#next").css("height"))
+			.css("left", $("#next").offset().left)
+			.css("top", $("#next").offset().top)
+			.hide();
+			;
+		
+		$("#end")
+			.css("width", $("#board").css("width"))
+			.css("height", $("#board").css("height"))
+			.css("left", $("#board").offset().left)
+			.css("top", $("#board").offset().top)
+			.hide();
+			;
+		
+		$("#info #level_text").text(["一般", "難"][level]);
+		$("#form1 #level").val(level);
+		
+		//init var
+		var board = new Array(countX * countY);
+		var dur = 0;
+		var line = 0;
+		var next = Math.floor(Math.random() * block.length);
+		var curr;
+		var rt, cx, cy;
+		
+		nextBlock();
+		
+		function nextBlock()
+		{
+			curr = next;
+			rt = 0;
+			cx = (countX - 4) / 2;
+			cy = -1;
+			if (!test(rt, cx, cy))
+			{
+				end();
+			}
+			paint();
+			
+			next = Math.floor(Math.random() * block.length);
+			paintNext();
+		}
+		
+		function paint()
+		{
+			var c = $("#board")[0].getContext("2d");
+			c.fillStyle = "#000000";
+			c.fillRect(0, 0, countX * width, countY * width);
+
+			for (var y = 0; y < countY; y++)
+			{
+				for (var x = 0; x < countX; x++)
+				{
+					if (board[x + y * countX] != undefined)
+					{
+						c.fillStyle = color[board[x + y * countX]];
+						c.fillRect(x * width, y * width, width, width);
+						c.strokeRect(x * width, y * width, width, width);
+					}
+				}
+			}
+			
+			for (var y = 0; y < 4; y++)
+			{
+				for (var x = 0; x < 4; x++)
+				{
+					if (block[curr][rt][x + y * 4])
+					{
+						c.fillStyle = color[curr];
+						c.fillRect((x + cx) * width, (y + cy) * width, width, width);
+						c.strokeRect((x + cx) * width, (y + cy) * width, width, width);
+					}
+				}
+			}
+		}
+		
+		function paintNext()
+		{
+			var c = $("#next")[0].getContext("2d");
+			c.fillStyle = "#000000";
+			c.fillRect(0, 0, countX * width, countY * width);
+
+			for (var y = 0; y < 4; y++)
+			{
+				for (var x = 0; x < 4; x++)
+				{
+					if (block[next][0][x + y * 4])
+					{
+						c.fillStyle = color[next];
+						c.fillRect(x * width, y * width, width, width);
+						c.strokeRect(x * width, y * width, width, width);
+					}
+				}
+			}
+		}
+		
+		function down()
+		{
+			if (test(rt, cx, cy + 1))
+			{
+				cy++;
+				paint();
+			}
+			else
+			{
+				combine();
+				nextBlock();
+			}
+		}
+		var iv_down = setInterval(down, speed);
+		
+		function test(nr, nx, ny)
+		{
+			for (var y = 0; y < 4; y++)
+			{
+				for (var x = 0; x < 4; x++)
+				{
+					if (block[curr][nr][x + y * 4] &&
+						(x + nx < 0 || x + nx == countX || y + ny == countY
+						 || board[(x + nx) + (y + ny) * countX] != undefined)
+						)
+					{
+						return false;
+					}
+				}
+			}
+			
+			return true;
+		}
+		
+		function time()
+		{
+			dur++;
+			$("#info #dur_text").text(("0" + Math.floor(dur / 60)).substr(-2) + ":" + ("0" + dur % 60).substr(-2));
+		}
+		var iv_time = setInterval(time, 1000);
+			
+		function combine()
+		{
+			for (var y = 0; y < 4; y++)
+			{
+				for (var x = 0; x < 4; x++)
+				{
+					if (block[curr][rt][x + y * 4])
+					{
+						board[(x + cx) + (y + cy) * countX] = curr;
+					}
+				}
+			}
+			
+			for (var y = 0; y < countY; y++)
+			{
+				for (var x = 0; x < countX; x++)
+				{
+					if (board[x + y * countX] == undefined)
+					{
+						break;
+					}
+					
+					if (x == countX - 1)
+					{
+						line++;
+						
+						for (var x = 0; x < countX; x++)
+						{
+							for (var z = y; z > 0; z--)
+							{
+								board[x + z * countX] = board[x + (z - 1) * countX];
+							}
+						}
+					}
+				}
+			}
+			$("#info #line_text").text(line);
+		}
+		
+		function end()
+		{
+			$("#end").show();
+			clearInterval(iv_down);
+			clearInterval(iv_time);
+			$("#form1 #dur_text").text(("0" + Math.floor(dur / 60)).substr(-2) + ":" + ("0" + dur % 60).substr(-2));
+			$("#form1 #dur").val(("0" + Math.floor(dur / 60)).substr(-2) + ":" + ("0" + dur % 60).substr(-2));
+			$("#form1 #line_text").text(line);
+			$("#form1 #line").val(line);
+		}
+		
+		$(this).keydown(function(e){
+			var nr = rt;
+			var nx = cx;
+			var ny = cy;
+			
+			switch (e.keyCode)
+			{
+				case 37:	nx--;	break;	//left
+				case 38:	nr = (rt + 1) % block[curr].length;	break;	//up
+				case 39:	nx++;	break;	//right
+				case 40:	ny++;	break;	//down
+			}
+			if (37 <= e.keyCode && e.keyCode <= 40)
+			{
+				e.preventDefault();
+				if (test(nr, nx, ny))
+				{
+					rt = nr;
+					cx = nx;
+					cy = ny;
+					paint();
+				}
+				else if (e.keyCode == 40)
+				{
+					combine();
+					nextBlock();
+				}
+			}
+		});
+		
+		$("#button_pause").click(function(){
+			$("#pause").toggle();
+			$("#pause2").toggle();
+			
+			if ($("#pause").is(":visible"))
+			{
+				$("#button_pause").text("繼續遊戲");
+				clearInterval(iv_down);
+				clearInterval(iv_time);
+			}
+			else
+			{
+				$("#button_pause").text("暫停遊戲");
+				iv_down = setInterval(down, speed);
+				iv_time = setInterval(time, 1000);
+			}
+		});
+		
+		$("#button_end").click(function(){
+			$('#dialog').dialog('open');
+		});
+		
+		$("#dialog").dialog({
+			autoOpen: false,
+			width: 400,
+			buttons: [
+				{
+					text: "是",
+					click: function(){
+						end();
+						$(this).dialog("close");
+					}
+				},
+				{
+					text: "否",
+					click: function(){
+						$(this).dialog("close");
+					}
+				}
+			]
+		});
+	});
+</script>
+</head>
+
+<body>
+<div style="display: inline-block; border: 10px solid rgb(0,102,0); float: left;">
+  <canvas id="board"></canvas>
+</div>
+<div style="display: inline-block; width: 200px; margin-left: 20px">
+  <div style="display: inline-block; border: 10px solid rgb(0,102,0); float: left;">
+    <canvas id="next"></canvas>
+  </div>
+  <br />
+  <br />
+  <table id="info" width="100" border="0">
+    <tr>
+      <td>等級：</td>
+      <td><span id="level_text">一般</span></td>
+    </tr>
+    <tr>
+      <td>行數：</td>
+      <td><span id="line_text">0</span></td>
+    </tr>
+    <tr>
+      <td>時間：</td>
+      <td><span id="dur_text">00:00</span></td>
+    </tr>
+  </table>
+  <br />
+  <br />
+  <button id="button_pause">暫停遊戲</button>
+  <br />
+  <br />
+  <button id="button_end">放棄遊戲</button>
+</div>
+<div id="pause">
+  <table width="100%" border="0">
+    <tr align="center">
+      <td>遊戲暫停</td>
+    </tr>
+  </table>
+</div>
+<div id="pause2">
+  <table width="100%" border="0">
+    <tr align="center">
+      <td>遊戲暫停</td>
+    </tr>
+  </table>
+</div>
+<div id="end">
+  <form id="form1" name="form1" method="POST" action="<?php echo $editFormAction; ?>">
+    <table width="100%" border="0">
+      <tr align="center">
+        <td colspan="2">遊戲結束</td>
+      </tr>
+      <tr>
+        <td>暱稱：</td>
+        <td><input name="name" type="text" id="name" size="8" /></td>
+      </tr>
+      <tr>
+        <td>時間：</td>
+        <td><span id="dur_text"></span>
+          <input type="hidden" name="dur" id="dur" /></td>
+      </tr>
+      <tr>
+        <td>行數：</td>
+        <td><span id="line_text"></span>
+          <input type="hidden" name="line" id="line" />
+          <input type="hidden" name="level" id="level" /></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center"><input type="submit" name="button" id="button" value="送出" /></td>
+      </tr>
+    </table>
+    <input type="hidden" name="MM_insert" value="form1" />
+  </form>
+</div>
+<div id="dialog" title="放棄遊戲?">
+  <p>點選"是"，即放棄遊戲</p>
+</div>
+</body>
+</html>
